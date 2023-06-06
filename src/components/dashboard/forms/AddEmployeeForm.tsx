@@ -2,23 +2,78 @@
 
 import { Button, DatePicker, Form, Input, Radio, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useJobPosition } from '@/utils/hook/jobposition';
+import { useOffice } from '@/utils/hook/office';
+import { useTeam } from '@/utils/hook/team';
+import { useStatus } from '@/utils/hook/status';
+import { QueryObserverIdleResult, UseQueryResult, useQueryClient } from 'react-query';
 
 const axios = require('axios');
 
 interface AddProps {
-    offices?: any[];
     callback: () => void;
-    jobPosition?: any[];
-    team?: any[];
-    status?: any[];
+    // dataOffice: UseQueryResult<void | {
+    //     dataOf: any;
+    // } | undefined> 
 }
-const AddEmployeeForm: React.FC<AddProps> = ( {callback, offices,  jobPosition, team, status}) => {
+// interface  QueryObserverIdleResult<TData, TError> {
+//     dataOffice: TData;
+// }
+
+const AddEmployeeForm: React.FC<AddProps> = ( {callback}) => {
     const validateMessages = {
         required: '${label} is required!',
         types: {
             email: '${label} is not a valid email!',
         },
     };
+
+    const [office, setOffice] = useState([]);
+    const [jobPosition, setJobPosition] = useState([]);
+    const [team, setTeam] = useState([]);
+    const [status, setStatus] = useState([]);
+
+    useEffect(() => {
+        setOffice((useOffice().data))
+    },[]);
+
+    // const { data, isLoading, isError, error, isFetching } = useJobPosition();
+    // useEffect(() => {
+    //     setOffice((data?.datadataJobPosition));
+
+    // },[]);
+
+    // const { data, isLoading, isError, error, isFetching } = useTeam();
+    // useEffect(() => {
+    //     setOffice((data?.dataTeam));
+
+    // },[]);
+
+    // const { data, isLoading, isError, error, isFetching } = useStatus();
+    // useEffect(() => {
+    //     setOffice((data?.dataStatus));
+
+    // },[]);
+
+    // const { data, isLoading, isError, error, isFetching } = useEmployeeList(pagination.current, pagination.pageSize);
+    // useEffect(() => {
+    //     setDataSource((data as { data, total, current, pageSize})?.data);
+
+    // }, [data]);
+
+    // const { data, isLoading, isError, error, isFetching } = useEmployeeList(pagination.current, pagination.pageSize);
+    // useEffect(() => {
+    //     setDataSource((data as { data, total, current, pageSize})?.data);
+
+    // }, [data]);
+
+    // const { data, isLoading, isError, error, isFetching } = useEmployeeList(pagination.current, pagination.pageSize);
+    // useEffect(() => {
+    //     setDataSource((data as { data, total, current, pageSize})?.data);
+
+    // }, [data]);
+
+
 
     // const onClick = () => {
     //     console.log("onclick")
@@ -76,7 +131,7 @@ const AddEmployeeForm: React.FC<AddProps> = ( {callback, offices,  jobPosition, 
                 body: raw,
                 redirect: 'follow',
             };
-            fetch('http://bi-hrm-be.sonatgame.com:5000/secure/employee', requestOptions as any)
+            fetch(`${process.env.NEXT_PUBLIC_BE_DOMAIN_URL}/secure/employee`, requestOptions as any)
                 .then(function (response: any) {
                     console.log(response.json());
                     callback();
@@ -125,8 +180,8 @@ const AddEmployeeForm: React.FC<AddProps> = ( {callback, offices,  jobPosition, 
 
                     <Form.Item name="office" label="Nơi làm việc">
                         <Select>
-                            <Select.Option value={offices[0].id}>{offices[0].office}</Select.Option>
-                            <Select.Option value={offices[1].id}>{offices[1].office}</Select.Option>
+                            <Select.Option value={office[0].id}>{office[0].office}</Select.Option>
+                            <Select.Option value={office[1].id}>{office[1].office}</Select.Option>
                         </Select>
                     </Form.Item>
 

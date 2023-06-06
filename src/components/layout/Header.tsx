@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Modal, Layout, theme, Input, Button, Dropdown, message, Space } from 'antd';
+import { Layout, theme, Input, Button, Dropdown, message, Space } from 'antd';
 import { SearchOutlined, DownOutlined, UserAddOutlined, UserDeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import Add from './addEmployee';
+import AddEmployeeModal from '../dashboard/modals/AddEmployeeModal';
 
 const { Header } = Layout;
 
@@ -74,20 +74,7 @@ const HeaderPage: React.FC<HeadProps> = ({officeData, jobPositionData, teamData,
                             <PlusOutlined />
                             Thêm
                         </Button>
-                        <Modal
-                            title="Thêm nhân viên"
-                            centered
-                            open={open}
-                            okType={'default'}
-                            onOk={() => setOpen(false)}
-                            onCancel={() => setOpen(false)}
-                            width={1000}
-                            afterClose={afterClose}
-                            footer={null}
-                        >
-                            <Add callback={addDone} offices={officeData} jobPosition={jobPositionData} team={teamData} status={statusData}/>
-                        </Modal>
-                        ;
+                        <AddEmployeeModal></AddEmployeeModal>                   
                     </div>
                 </div>
             </Header>
